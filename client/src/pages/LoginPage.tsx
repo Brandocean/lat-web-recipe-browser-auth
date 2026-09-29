@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useFormWithValidation } from "../hooks/useFormWithValidation";
+import { useAuth } from "../contexts/AuthContext";
+import { loginUser } from "../utils/api";
 
 export default function LoginPage() {
     const { values, errors, isValid, handleChange } = useFormWithValidation();
+    const [submitError, setSubmitError] = useState("");
 
-    function handleSubmit(event: React.FormEvent) {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+
+
+    async function handleSubmit(event: React.FormEvent) {
         event.preventDefault();
         if (!isValid) return;
-        // la lógica de envío se añadirá más adelante
+        try {
+            const { token, user } = await loginUser(values.email, values.password);
+            login(token, user);
+            navigate("/");
+        } catch (err) {
+            setSubmitError(err instanceof Error ? err.message : "Algo salió mal");
+        }
     }
 
     return (
@@ -44,6 +59,7 @@ export default function LoginPage() {
             <button className="form__submit-btn" type="submit" disabled={!isValid}>
                 Enviar
             </button>
+            {submitError && <p className="form__error">{submitError}</p>}
         </form>
     );
 }

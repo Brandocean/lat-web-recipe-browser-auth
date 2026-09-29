@@ -1,18 +1,21 @@
 import { createContext, useContext, useState } from "react";
 import type { ReactNode } from "react";
 import type { CurrentUser } from "../types";
+
 type AuthContextValue = {
   currentUser: CurrentUser | null;
   isAuthenticated: boolean;
   login: (token: string, user: CurrentUser) => void;
   logout: () => void;
 };
+
 const AuthContext = createContext<AuthContextValue>({
   currentUser: null,
   isAuthenticated: false,
-  login: () => {},
-  logout: () => {},
+  login: () => { },
+  logout: () => { },
 });
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -38,6 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     </AuthContext.Provider>
   );
 }
+
 export function useAuth() {
   return useContext(AuthContext);
 }
