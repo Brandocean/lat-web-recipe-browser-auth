@@ -13,6 +13,6 @@ export type Recipe = {
 };
 
 export type CurrentUser = {
-  id: string;
+  _id: string;
   email: string;
 };
