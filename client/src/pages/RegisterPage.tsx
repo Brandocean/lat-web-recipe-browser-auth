@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useFormWithValidation } from '../hooks/useFormWithValidation';
-import { useAuth } from "../contexts/AuthContext";
 import { registerUser } from "../utils/api";
 
 export default function RegisterPage() {
     const { values, errors, isValid, handleChange } = useFormWithValidation();
     const [submitError, setSubmitError] = useState("");
-    const { login } = useAuth();
     const navigate = useNavigate();
 
     async function handleSubmit(event: React.FormEvent) {
